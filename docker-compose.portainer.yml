@@ -1,0 +1,44 @@
+version: '3.9'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-mire_as_estrelas}
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+    ports:
+      - '5432:5432'
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U postgres']
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    image: ghcr.io/devjohnl/mire-as-estrelas-backend:latest
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@postgres:5432/${POSTGRES_DB:-mire_as_estrelas}
+      NODE_ENV: ${NODE_ENV:-production}
+      GOOGLE_AI_API_KEY: ${GOOGLE_AI_API_KEY}
+      YOUTUBE_API_KEY: ${YOUTUBE_API_KEY}
+      ENEM_API_BASE_URL: ${ENEM_API_BASE_URL:-https://api.enem.dev/v1}
+      FRONTEND_URL: ${FRONTEND_URL:-http://localhost}
+      PORT: ${PORT:-3000}
+    ports:
+      - '3000:3000'
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  frontend:
+    image: ghcr.io/devjohnl/mire-as-estrelas-frontend:latest
+    ports:
+      - '80:80'
+    depends_on:
+      - backend
+
+volumes:
+  pgdata:
