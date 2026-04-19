@@ -1,0 +1,363 @@
+/* ========================================
+   MIRE AS ESTRELAS — Sistema de Design
+   Cósmico escuro + Saturno (azul profundo + dourado)
+   ======================================== */
+
+:root {
+  /* Color tokens */
+  --void: #05060d;
+  --deep-space: #0a0e1f;
+  --nebula: #121833;
+  --twilight: #1a2148;
+  --orbit: #2a3366;
+  --starlight: #e8ecff;
+  --moonlight: #b8c0e8;
+  --dust: #6b7399;
+  --gold: #e8c07d;
+  --gold-soft: #f4d89e;
+  --gold-deep: #b8893e;
+  --saturn: #c9a776;
+  --nebula-blue: #4a6fd4;
+  --success: #7ed3b2;
+  --danger: #e87a8f;
+
+  /* Type — geometric, low-curvature */
+  --serif: "Space Grotesk", "Inter Tight", sans-serif;
+  --sans: "Inter Tight", "Manrope", -apple-system, BlinkMacSystemFont, sans-serif;
+  --mono: "JetBrains Mono", "Space Mono", ui-monospace, monospace;
+
+  /* Motion */
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-slow: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  background: var(--void);
+  color: var(--starlight);
+  font-family: var(--sans);
+  font-size: 15px;
+  line-height: 1.5;
+  overflow: hidden;
+  height: 100vh;
+  width: 100vw;
+  letter-spacing: 0.005em;
+  -webkit-font-smoothing: antialiased;
+}
+
+#root { height: 100vh; width: 100vw; position: relative; }
+
+/* ===== Cosmic Background ===== */
+.cosmos {
+  position: fixed; inset: 0; z-index: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 75% 20%, rgba(74, 111, 212, 0.12), transparent 60%),
+    radial-gradient(ellipse 60% 80% at 20% 80%, rgba(232, 192, 125, 0.05), transparent 60%),
+    radial-gradient(ellipse 100% 60% at 50% 50%, rgba(18, 24, 51, 0.6), transparent 70%),
+    linear-gradient(180deg, #05060d 0%, #080b1a 50%, #05060d 100%);
+  overflow: hidden;
+}
+
+.stars-layer {
+  position: absolute; inset: 0;
+  pointer-events: none;
+}
+
+.star {
+  position: absolute;
+  background: white;
+  border-radius: 50%;
+  will-change: opacity, transform;
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: var(--opacity-max, 0.8); transform: scale(1); }
+  50% { opacity: 0.2; transform: scale(0.6); }
+}
+
+.shooting-star {
+  position: absolute;
+  width: 2px; height: 2px;
+  background: white;
+  border-radius: 50%;
+  box-shadow: 0 0 6px 1px rgba(255,255,255,0.8);
+}
+
+.shooting-star::before {
+  content: '';
+  position: absolute;
+  top: 50%; right: 0;
+  width: 120px; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.8));
+  transform: translateY(-50%);
+}
+
+@keyframes shoot {
+  0% { transform: translate(0,0) rotate(215deg); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { transform: translate(-600px, 420px) rotate(215deg); opacity: 0; }
+}
+
+/* ===== Saturn ornament ===== */
+.saturn-deco {
+  position: absolute;
+  width: 380px; height: 380px;
+  top: -120px; right: -80px;
+  opacity: 0.35;
+  pointer-events: none;
+  filter: blur(0.3px);
+}
+
+/* ===== Typography helpers ===== */
+.eyebrow {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gold);
+  font-weight: 500;
+}
+
+.display {
+  font-family: var(--serif);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  line-height: 1.05;
+}
+
+.display-lg { font-size: 64px; }
+.display-md { font-size: 44px; }
+.display-sm { font-size: 32px; }
+
+h1, h2, h3, h4 { font-weight: 500; letter-spacing: -0.01em; }
+
+/* ===== App Shell ===== */
+.app {
+  position: relative;
+  z-index: 1;
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 22px 44px;
+  position: relative;
+  z-index: 30;
+}
+
+.brand {
+  display: flex; align-items: center; gap: 14px;
+}
+
+.brand-mark {
+  width: 34px; height: 34px;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.brand-name {
+  font-family: var(--serif);
+  font-size: 22px;
+  letter-spacing: 0.01em;
+  color: var(--starlight);
+}
+
+.brand-name em {
+  font-style: normal;
+  font-weight: 600;
+  color: var(--gold);
+  letter-spacing: -0.01em;
+}
+
+.brand-tag {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--dust);
+  border-left: 1px solid var(--orbit);
+  padding-left: 14px;
+  margin-left: 8px;
+}
+
+/* Hamburger button */
+.hamburger {
+  width: 46px; height: 46px;
+  border-radius: 50%;
+  border: 1px solid var(--orbit);
+  background: rgba(10, 14, 31, 0.6);
+  backdrop-filter: blur(10px);
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  transition: all 0.3s var(--ease);
+  position: relative;
+  color: var(--starlight);
+}
+
+.hamburger:hover {
+  border-color: var(--gold);
+  background: rgba(232, 192, 125, 0.08);
+  transform: scale(1.05);
+}
+
+.hamburger svg { width: 18px; height: 18px; }
+
+.hamburger.active {
+  border-color: var(--gold);
+  background: var(--gold);
+  color: var(--void);
+}
+
+/* ===== Main content area ===== */
+.main {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 0 44px 44px;
+  position: relative;
+}
+
+.main::-webkit-scrollbar { width: 6px; }
+.main::-webkit-scrollbar-track { background: transparent; }
+.main::-webkit-scrollbar-thumb { background: var(--orbit); border-radius: 3px; }
+
+/* ===== Cards ===== */
+.card {
+  background: rgba(18, 24, 51, 0.4);
+  border: 1px solid rgba(42, 51, 102, 0.6);
+  border-radius: 14px;
+  backdrop-filter: blur(12px);
+  padding: 24px;
+  position: relative;
+  transition: all 0.3s var(--ease);
+}
+
+.card-quiet {
+  background: rgba(10, 14, 31, 0.5);
+  border: 1px solid rgba(42, 51, 102, 0.4);
+}
+
+.card:hover { border-color: rgba(232, 192, 125, 0.35); }
+
+/* ===== Buttons ===== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 22px;
+  border-radius: 999px;
+  border: 1px solid var(--orbit);
+  background: transparent;
+  color: var(--starlight);
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  transition: all 0.25s var(--ease);
+  white-space: nowrap;
+}
+
+.btn:hover { border-color: var(--gold); color: var(--gold); }
+
+.btn-primary {
+  background: var(--gold);
+  color: var(--void);
+  border-color: var(--gold);
+}
+.btn-primary:hover {
+  background: var(--gold-soft);
+  color: var(--void);
+  box-shadow: 0 6px 24px rgba(232, 192, 125, 0.25);
+}
+
+.btn-ghost { border-color: transparent; }
+.btn-ghost:hover { background: rgba(232, 192, 125, 0.08); }
+
+.btn-sm { padding: 7px 14px; font-size: 12px; }
+
+/* ===== Utility ===== */
+.row { display: flex; align-items: center; }
+.col { display: flex; flex-direction: column; }
+.gap-8 { gap: 8px; } .gap-12 { gap: 12px; } .gap-16 { gap: 16px; }
+.gap-20 { gap: 20px; } .gap-24 { gap: 24px; } .gap-32 { gap: 32px; }
+
+.divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--orbit), transparent);
+  width: 100%;
+}
+
+/* Focus */
+button:focus-visible, [role="button"]:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 3px;
+}
+
+/* ===== Motivational lyric block ===== */
+.lyric-whisper {
+  font-family: var(--serif);
+  font-style: normal;
+  font-weight: 400;
+  font-size: 17px;
+  color: var(--moonlight);
+  line-height: 1.5;
+  letter-spacing: -0.005em;
+}
+
+.lyric-whisper::before {
+  content: '— ';
+  color: var(--gold);
+}
+
+/* Page fade */
+@keyframes pageIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.page { animation: pageIn 0.5s var(--ease); }
+
+/* Select disabled native */
+input, textarea, select, button { font-family: inherit; }
+
+/* ===== Tweaks panel ===== */
+.tweaks {
+  position: fixed;
+  bottom: 24px; right: 24px;
+  width: 280px;
+  background: rgba(10, 14, 31, 0.85);
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--orbit);
+  border-radius: 14px;
+  padding: 18px;
+  z-index: 200;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+  animation: pageIn 0.3s var(--ease);
+}
+.tweaks h4 {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 12px;
+}
+.tweaks label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: var(--moonlight);
+  margin-bottom: 8px;
+}
+.tweaks input[type=range] {
+  width: 100%;
+  accent-color: var(--gold);
+}

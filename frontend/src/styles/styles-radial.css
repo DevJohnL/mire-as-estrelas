@@ -1,0 +1,101 @@
+/* ============= RADIAL MENU ============= */
+.radial-root {
+  position: fixed; inset: 0;
+  z-index: 100;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s var(--ease);
+}
+.radial-root.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+.radial-scrim {
+  position: absolute; inset: 0;
+  background: radial-gradient(circle at 50% 50%, rgba(10,14,31,0.85), rgba(5,6,13,0.97));
+  backdrop-filter: blur(8px);
+}
+.radial-stage {
+  position: absolute;
+  left: 50%; top: 50%;
+  width: 700px; height: 700px;
+  transform: translate(-50%, -50%);
+}
+.radial-orbits {
+  position: absolute;
+  inset: 0;
+  width: 100%; height: 100%;
+  animation: orbitSpin 120s linear infinite;
+}
+@keyframes orbitSpin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+.radial-center {
+  position: absolute;
+  left: 50%; top: 50%;
+  transform: translate(-50%, -50%);
+  width: 220px;
+  text-align: center;
+}
+.radial-center-inner {
+  padding: 24px;
+}
+.radial-item {
+  position: absolute;
+  left: 50%; top: 50%;
+  width: 200px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  color: var(--starlight);
+  transition: transform 0.7s var(--ease-slow), opacity 0.5s var(--ease);
+  opacity: 0;
+}
+.radial-root.open .radial-item { opacity: 1; }
+
+.radial-item-star {
+  width: 72px; height: 72px;
+  border-radius: 50%;
+  border: 1px solid var(--orbit);
+  background: rgba(10, 14, 31, 0.9);
+  display: grid;
+  place-items: center;
+  color: var(--moonlight);
+  transition: all 0.3s var(--ease);
+  position: relative;
+}
+.radial-item-star::after {
+  content: '';
+  position: absolute;
+  inset: -12px;
+  border-radius: 50%;
+  border: 1px solid rgba(232,192,125,0.15);
+  opacity: 0;
+  transition: opacity 0.3s var(--ease);
+}
+.radial-item:hover .radial-item-star {
+  border-color: var(--gold);
+  color: var(--gold);
+  box-shadow: 0 0 40px rgba(232,192,125,0.25), inset 0 0 20px rgba(232,192,125,0.08);
+}
+.radial-item:hover .radial-item-star::after { opacity: 1; }
+.radial-item.active .radial-item-star {
+  border-color: var(--gold);
+  color: var(--gold);
+  box-shadow: 0 0 30px rgba(232,192,125,0.3);
+}
+.radial-item-star svg { width: 28px; height: 28px; }
+
+.radial-item-label {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  align-items: center;
+}
