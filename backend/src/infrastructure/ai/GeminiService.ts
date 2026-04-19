@@ -51,7 +51,7 @@ export class GeminiService implements IAIService {
 
   constructor() {
     const genAI = new GoogleGenerativeAI(process.env.GOOGLE_AI_API_KEY!)
-    this.model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' })
+    this.model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' })
   }
 
   async evaluateQEPB(input: QEPBEvaluationInput): Promise<AIFeedback> {

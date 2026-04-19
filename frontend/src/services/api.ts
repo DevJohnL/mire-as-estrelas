@@ -12,17 +12,61 @@ async function request<T>(path: string, options?: RequestInit): Promise<T> {
   return res.json() as Promise<T>
 }
 
+export interface Alternative { key: string; text: string }
+
+export interface Question {
+  id: string
+  enemId: string
+  year: number
+  subjectId: string
+  topicId: string | null
+  statement: string
+  alternatives: Alternative[]
+  correctAnswer: string
+  difficulty: number
+}
+
+export interface PrerequisitePath {
+  topic: string
+  prerequisites: string[]
+  base: string
+  khanAcademyUrl: string | null
+}
+
+export interface YouTubeVideo {
+  videoId: string
+  title: string
+  channelTitle: string
+  thumbnailUrl: string
+}
+
+export interface AIFeedback {
+  isCorrect: boolean
+  explanationQuality: 'solid' | 'partial' | 'guessed'
+  aiExplanation: string
+  prerequisitePath: PrerequisitePath | null
+  youtubeVideos: YouTubeVideo[]
+}
+
+export interface EvaluateResult {
+  performance: { id: string; isCorrect: boolean }
+  aiFeedback: AIFeedback
+}
+
 export const api = {
   questions: {
     list: (subjectId?: string, limit = 10) =>
-      request(`/questions?${subjectId ? `subjectId=${subjectId}&` : ''}limit=${limit}`),
-    get: (id: string) => request(`/questions/${id}`),
+      request<Question[]>(`/questions?${subjectId ? `subjectId=${subjectId}&` : ''}limit=${limit}`),
+    get: (id: string) =>
+      request<Question>(`/questions/${id}`),
     evaluate: (body: { userId: string; questionId: string; chosenAnswer: string; userExplanation: string }) =>
-      request('/questions/evaluate', { method: 'POST', body: JSON.stringify(body) }),
+      request<EvaluateResult>('/questions/evaluate', { method: 'POST', body: JSON.stringify(body) }),
     updateSelfAssessment: (performanceId: string, selfAssessment: 1 | 2 | 3) =>
-      request(`/questions/performances/${performanceId}/self-assessment`, {
+      request<{ ok: boolean }>(`/questions/performances/${performanceId}/self-assessment`, {
         method: 'PATCH', body: JSON.stringify({ selfAssessment }),
       }),
+    seed: (year = 2023) =>
+      request<{ imported: number; year: number }>(`/questions/seed?year=${year}`, { method: 'POST' }),
   },
   studyPlan: {
     generate: (body: { userId: string; config: { dailyMinutes: number; studyDaysPerWeek: number }; subjectIds: string[] }) =>

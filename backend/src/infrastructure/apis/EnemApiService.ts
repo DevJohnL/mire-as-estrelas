@@ -28,8 +28,9 @@ export class EnemApiService implements IEnemApiService {
     const res = await fetch(url)
     if (!res.ok) throw new Error(`ENEM API error: ${res.status}`)
 
-    const data = await res.json() as EnemApiQuestion[]
-    return data.map((q) => this.mapQuestion(q))
+    const data = await res.json() as { questions?: EnemApiQuestion[] } | EnemApiQuestion[]
+    const questions = Array.isArray(data) ? data : (data.questions ?? [])
+    return questions.map((q) => this.mapQuestion(q))
   }
 
   async fetchQuestionById(enemId: string): Promise<Question | null> {

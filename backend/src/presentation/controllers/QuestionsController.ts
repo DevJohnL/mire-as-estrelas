@@ -5,6 +5,7 @@ import { PgQuestionRepository } from '../../infrastructure/database/repositories
 import { PgPerformanceRepository } from '../../infrastructure/database/repositories/PgPerformanceRepository'
 import { GeminiService } from '../../infrastructure/ai/GeminiService'
 import { YouTubeService } from '../../infrastructure/apis/YouTubeService'
+import { EnemApiService } from '../../infrastructure/apis/EnemApiService'
 import { SelfAssessmentLevel } from '../../domain/entities/Performance'
 
 const evaluateSchema = z.object({
@@ -54,6 +55,18 @@ export class QuestionsController {
       )
       const result = await useCase.execute(input)
       res.json(result)
+    } catch (e) { next(e) }
+  }
+
+  seedQuestions = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const year = parseInt((req.query.year as string) ?? '2023', 10)
+      const enemApi = new EnemApiService()
+      const questions = await enemApi.fetchQuestions({ year, limit: 30 })
+      for (const q of questions) {
+        await this.questionRepo.save(q)
+      }
+      res.json({ imported: questions.length, year })
     } catch (e) { next(e) }
   }
 

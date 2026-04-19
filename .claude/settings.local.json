@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git init *)",
+      "Bash(gunzip -c \"C:\\\\Users\\\\joaol\\\\.claude\\\\projects\\\\C--Users-joaol-Documents-projetos-tars\\\\59742d7f-0d58-4de6-8132-ba4fbe5c24ce\\\\tool-results\\\\webfetch-1776597820888-wcrk55.bin\")",
+      "Bash(tar -x --wildcards \"*/components/App.jsx\" -O)",
+      "Bash(tar -x --wildcards \"*/components/Cosmos.jsx\" -O)",
+      "Bash(tar -x --wildcards \"*/styles.css\" -O)",
+      "Bash(tar -x --wildcards \"*/styles-radial.css\" -O)",
+      "Bash(tar -x --wildcards \"*/styles-dashboard.css\" -O)",
+      "Bash(tar -x --wildcards \"*/styles-questoes.css\" -O)",
+      "Bash(tar -x --wildcards \"*/styles-redacao.css\" -O)",
+      "Bash(npm install *)",
+      "Bash(npm run *)",
+      "Bash(curl -s \"http://localhost:3003/api/questions?limit=1\")",
+      "Bash(node -e \"let d=''; process.stdin.on\\('data',c=>d+=c\\); process.stdin.on\\('end',\\(\\)=>{const r=JSON.parse\\(d\\); console.log\\('isCorrect:', r.aiFeedback?.isCorrect\\); console.log\\('quality:', r.aiFeedback?.explanationQuality\\); console.log\\('hasPrereq:', !!r.aiFeedback?.prerequisitePath\\); console.log\\('perfId:', r.performance?.id?.slice\\(0,8\\)\\)}\\)\")",
+      "Bash(node -e \"let d=''; process.stdin.on\\('data',c=>d+=c\\); process.stdin.on\\('end',\\(\\)=>console.log\\(JSON.stringify\\(JSON.parse\\(d\\), null, 2\\).slice\\(0,800\\)\\)\\)\")",
+      "Bash(node -e \"const p = require\\('./node_modules/@google/generative-ai/package.json'\\); console.log\\(p.version\\)\")",
+      "Bash(node -e \"let d=''; process.stdin.on\\('data',c=>d+=c\\); process.stdin.on\\('end',\\(\\)=>{const r=JSON.parse\\(d\\); console.log\\('isCorrect:', r.aiFeedback?.isCorrect\\); console.log\\('quality:', r.aiFeedback?.explanationQuality\\); console.log\\('explanation preview:', r.aiFeedback?.aiExplanation?.slice\\(0,100\\)\\); console.log\\('hasPrereq:', !!r.aiFeedback?.prerequisitePath\\); console.log\\('perfId:', r.performance?.id?.slice\\(0,8\\)\\)}\\)\")"
+    ]
+  }
+}
